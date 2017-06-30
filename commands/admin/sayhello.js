@@ -23,7 +23,9 @@ module.exports = class SayHello extends Command {
     }
 
     async run(msg) {
-      var date = new Date();
-      return msg.channel.send(date.toString());
+      msg.channel.send(msg.guild.memberCount);
+      msg.guild.fetchMembers().then(function(members){
+        console.log(members.members);
+      });
     }
 };

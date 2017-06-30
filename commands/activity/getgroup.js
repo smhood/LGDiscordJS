@@ -41,12 +41,20 @@ module.exports = class GetUserCommand extends Command {
           return msg.channel.send(groupname + ' returned back no members.');
         }
         else{
-          var users = "";
+          var post = "";
           grps.forEach(function(group){
-            users += group.username + ' has a post count of: ' + group.postcount + '\n';
+            post += group.username + ' has a post count of: ' + group.postcount + '\n';
+            if(post.length > 1500){
+              msg.author.send(post);
+              post = "";
+            }
           });
 
-          return msg.author.send(users);
+          if(post.length > 0){
+            msg.author.send(post);
+          }
+
+          return;
         }
       });
     }

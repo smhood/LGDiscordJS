@@ -47,12 +47,20 @@ client.on('message', (msg) => {
               User.findAll({where: {}}).then(usrs => {
                 client.channels.find('name', 'activitylog').send('Logging Last Month Messages Here! Users post count have been reset!');
                 var copy = Object.assign([], usrs);
+
                 var post = "";
-                copy.map(async (user) => {
+                copy.forEach(function(user){
                   post += user.username + ' has a post count of: ' + user.postcount + '\n';
+                  if(post.length > 1500){
+                    client.channels.find('name', 'activitylog').send(post);
+                    post = "";
+                  }
                 });
 
-                client.channels.find('name', 'activitylog').send(post);
+                if(post.length > 0){
+                  client.channels.find('name', 'activitylog').send(post);
+                }
+
                 User.destroy({ where: {}}).then(function(){});
               });
             });
